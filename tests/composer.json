@@ -11,9 +11,6 @@
     "bovigo/assert": "~1.7",
     "mikey179/vfsStream": "*"
   },
-  "post-install-cmd": [
-    "mkdir -p themes modules profiles"
-  ],
   "minimum-stability": "dev",
   "prefer-stable": true,
   "repositories": [
