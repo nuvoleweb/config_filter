@@ -26,7 +26,7 @@
       "./vendor/bin/phpcs --config-set show_progress 1",
       "cp ./tests/scripts/pre-push.sh .git/hooks/pre-push && chmod +x .git/hooks/pre-push"
     ],
-    "phpcs": "./vendor/bin/phpcs --standard=Drupal,DrupalPractice . --ignore=./vendor",
-    "phpcbf": "./vendor/bin/phpcbf --standard=Drupal,DrupalPractice . --ignore=./vendor"
+    "phpcs": "./vendor/bin/phpcs --standard=Drupal,DrupalPractice . --ignore=./vendor,./tests",
+    "phpcbf": "./vendor/bin/phpcbf --standard=Drupal,DrupalPractice . --ignore=./vendor,./tests"
   }
 }
