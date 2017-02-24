@@ -61,7 +61,7 @@ abstract class ConfigFilterBase extends PluginBase implements ConfigFilterInterf
   /**
    * {@inheritdoc}
    */
-  public function filterRead($name, $data) {
+  public function filterRead($name, array $data) {
     return $data;
   }
 
@@ -131,7 +131,7 @@ abstract class ConfigFilterBase extends PluginBase implements ConfigFilterInterf
   /**
    * {@inheritdoc}
    */
-  public function filterGetAllCollectionNames($collections) {
+  public function filterGetAllCollectionNames(array $collections) {
     return $collections;
   }
 

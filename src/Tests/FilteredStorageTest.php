@@ -19,7 +19,7 @@ class FilteredStorageTest extends CachedStorageTest {
     parent::setUp();
     // The storage is a wrapper with a transparent filter.
     // So all inherited tests should still pass.
-    $this->storage = new FilteredStorage($this->storage, new TransparentFilter());
+    $this->storage = new FilteredStorage($this->storage, [new TransparentFilter()]);
   }
 
 }
