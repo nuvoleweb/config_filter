@@ -37,7 +37,7 @@ class FilteredStorage implements FilteredStorageInterface {
    * @param \Drupal\config_filter\Config\StorageFilterInterface[] $filters
    *   The filters to apply in the given order.
    */
-  public function __construct(StorageInterface $storage, $filters) {
+  public function __construct(StorageInterface $storage, array $filters) {
     $this->storage = $storage;
     $this->filters = $filters;
 

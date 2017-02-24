@@ -48,10 +48,10 @@ interface StorageFilterInterface {
    * @param array $data
    *   The configuration data to filter.
    *
-   * @return array $data
+   * @return array
    *   The filtered data.
    */
-  public function filterRead($name, $data);
+  public function filterRead($name, array $data);
 
   /**
    * Filter configuration data before it is written to the storage.
@@ -61,7 +61,7 @@ interface StorageFilterInterface {
    * @param array $data
    *   The configuration data to filter.
    *
-   * @return array $data
+   * @return array
    *   The filtered data.
    */
   public function filterWrite($name, array $data);
@@ -204,7 +204,7 @@ interface StorageFilterInterface {
    * @return array
    *   An array of existing collection names.
    */
-  public function filterGetAllCollectionNames($collections);
+  public function filterGetAllCollectionNames(array $collections);
 
   /**
    * Filter the name of the current collection the storage is using.
