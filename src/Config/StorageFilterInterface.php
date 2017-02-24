@@ -45,13 +45,13 @@ interface StorageFilterInterface {
    *
    * @param string $name
    *   The name of a configuration object to load.
-   * @param array $data
+   * @param array|bool $data
    *   The configuration data to filter.
    *
    * @return array
    *   The filtered data.
    */
-  public function filterRead($name, array $data);
+  public function filterRead($name, $data);
 
   /**
    * Filter configuration data before it is written to the storage.

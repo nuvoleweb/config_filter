@@ -13,7 +13,7 @@
   ],
   "prefer-stable": true,
   "require-dev": {
-    "drupal/coder": "~8.2 | ~2"
+    "drupal/coder": "^8.2 | ~2.0"
   },
   "scripts": {
     "post-install-cmd": [
