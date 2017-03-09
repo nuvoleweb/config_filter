@@ -5,6 +5,7 @@ namespace Drupal\config_filter\Plugin;
 use Drupal\config_filter\Config\FilteredStorage;
 use Drupal\config_filter\ConfigFilterManagerInterface;
 use Drupal\Core\Config\FileStorageFactory;
+use Drupal\Core\Config\StorageInterface;
 use Drupal\Core\Plugin\DefaultPluginManager;
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
@@ -35,8 +36,19 @@ class ConfigFilterPluginManager extends DefaultPluginManager implements ConfigFi
   /**
    * {@inheritdoc}
    */
+  public function getFilteredStorage(StorageInterface $storage, $storage_name, array $excluded = []) {
+    $filters = $this->getFilters($storage_name);
+    if (!empty($excluded)) {
+      $filters = array_diff_key($filters, array_combine($excluded, $excluded));
+    }
+    return new FilteredStorage($storage, $filters);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getFilteredSyncStorage() {
-    return new FilteredStorage(FileStorageFactory::getSync(), $this->getFilters('config.storage.sync'));
+    return $this->getFilteredStorage(FileStorageFactory::getSync(), 'config.storage.sync');
   }
 
   /**
@@ -59,11 +71,12 @@ class ConfigFilterPluginManager extends DefaultPluginManager implements ConfigFi
     $filters = [];
     foreach ($definitions as $id => $definition) {
       if (empty($definition['storages'])) {
+        // The sync storage is the default.
         $definition['storages'] = ['config.storage.sync'];
       }
 
       if ($definition['status'] && in_array($storage_name, $definition['storages'])) {
-        $filters[] = $this->createInstance($id, $definition);
+        $filters[$id] = $this->createInstance($id, $definition);
       }
     }
 
