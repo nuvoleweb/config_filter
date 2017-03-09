@@ -21,7 +21,7 @@ class ReadOnlyStorage implements StorageInterface {
   protected $storage;
 
   /**
-   * Create a FilteredStorage with some storage and a filter.
+   * Create a ReadOnlyStorage decorating another storage.
    *
    * @param \Drupal\Core\Config\StorageInterface $storage
    *   The decorated storage.
@@ -111,14 +111,14 @@ class ReadOnlyStorage implements StorageInterface {
    * {@inheritdoc}
    */
   public function getAllCollectionNames() {
-    $this->storage->getAllCollectionNames();
+    return $this->storage->getAllCollectionNames();
   }
 
   /**
    * {@inheritdoc}
    */
   public function getCollectionName() {
-    $this->storage->getCollectionName();
+    return $this->storage->getCollectionName();
   }
 
 }

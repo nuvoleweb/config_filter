@@ -11,6 +11,8 @@ use Drupal\Core\Config\StorageInterface;
  * to use when filtering the operations on the storage. The ConfigFilter plugin
  * interface extends this interface, together with plugin related interfaces.
  *
+ * A well-behaved filter does not perform any write operation in a read method.
+ *
  * @package Drupal\config_split\Config
  */
 interface StorageFilterInterface {
