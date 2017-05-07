@@ -24,7 +24,9 @@ interface ConfigFilterManagerInterface extends PluginManagerInterface {
   public function getFiltersForStorages(array $storage_names, array $excluded = []);
 
   /**
-   * @param $id
+   * Get a configured filter instance by plugin id.
+   *
+   * @param string $id
    *   The plugin id of the filter to load.
    *
    * @return \Drupal\config_filter\Plugin\ConfigFilterInterface
