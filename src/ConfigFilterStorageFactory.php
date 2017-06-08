@@ -48,6 +48,19 @@ class ConfigFilterStorageFactory {
   }
 
   /**
+   * Get the sync storage Drupal uses and exclude some plugins.
+   *
+   * @param string[] $excluded
+   *   The ids of filters to exclude.
+   *
+   * @return \Drupal\config_filter\Config\FilteredStorageInterface
+   *   The decorated sync config storage.
+   */
+  public function getSyncWithoutExcluded(array $excluded) {
+    return $this->getFilteredStorage($this->sync, ['config.storage.sync'], $excluded);
+  }
+
+  /**
    * Get a decorated storage with filters applied.
    *
    * @param \Drupal\Core\Config\StorageInterface $storage
