@@ -18,23 +18,30 @@ class ConfigFilterStorageFactory {
   protected $sync;
 
   /**
-   * The plugin manager to load the filters from.
+   * The filter managers to load the filters from.
    *
-   * @var \Drupal\config_filter\ConfigFilterManagerInterface
+   * @var \Drupal\config_filter\ConfigFilterManagerInterface[]
    */
-  protected $manager;
+  protected $managers = [];
 
   /**
    * ConfigFilterFactory constructor.
    *
    * @param \Drupal\Core\Config\StorageInterface $sync
    *   The original sync storage which is decorated by our filtered storage.
+   */
+  public function __construct(StorageInterface $sync) {
+    $this->sync = $sync;
+  }
+
+  /**
+   * Add a config filter manager.
+   *
    * @param \Drupal\config_filter\ConfigFilterManagerInterface $manager
    *   The ConfigFilter plugin manager.
    */
-  public function __construct(StorageInterface $sync, ConfigFilterManagerInterface $manager) {
-    $this->sync = $sync;
-    $this->manager = $manager;
+  public function addConfigFilterManager(ConfigFilterManagerInterface $manager) {
+    $this->managers[] = $manager;
   }
 
   /**
@@ -74,7 +81,13 @@ class ConfigFilterStorageFactory {
    *   The decorated storage with the filters applied.
    */
   public function getFilteredStorage(StorageInterface $storage, array $storage_names, array $excluded = []) {
-    return new FilteredStorage($storage, $this->manager->getFiltersForStorages($storage_names, $excluded));
+    $filters = [];
+    foreach ($this->managers as $manager) {
+      // Filters from managers that come first will not be overwritten by
+      // filters from lower priority managers.
+      $filters = $filters + $manager->getFiltersForStorages($storage_names, $excluded);
+    }
+    return new FilteredStorage($storage, $filters);
   }
 
 }

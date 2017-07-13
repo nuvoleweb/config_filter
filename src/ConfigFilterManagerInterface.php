@@ -8,7 +8,7 @@ use Drupal\Core\Config\StorageInterface;
 /**
  * Interface ConfigFilterManagerInterface.
  */
-interface ConfigFilterManagerInterface extends PluginManagerInterface {
+interface ConfigFilterManagerInterface {
 
   /**
    * Get the applicable filters for given storage names.
@@ -18,18 +18,18 @@ interface ConfigFilterManagerInterface extends PluginManagerInterface {
    * @param string[] $excluded
    *   The ids of filters to exclude.
    *
-   * @return \Drupal\config_filter\Plugin\ConfigFilterInterface[]
-   *   The configured plugin instances.
+   * @return \Drupal\config_filter\Config\StorageFilterInterface[]
+   *   The configured filter instances, keyed by filter id.
    */
   public function getFiltersForStorages(array $storage_names, array $excluded = []);
 
   /**
-   * Get a configured filter instance by plugin id.
+   * Get a configured filter instance by (plugin) id.
    *
    * @param string $id
    *   The plugin id of the filter to load.
    *
-   * @return \Drupal\config_filter\Plugin\ConfigFilterInterface
+   * @return \Drupal\config_filter\Config\StorageFilterInterface
    *   The ConfigFilter.
    */
   public function getFilterInstance($id);
