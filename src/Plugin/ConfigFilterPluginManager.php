@@ -3,7 +3,6 @@
 namespace Drupal\config_filter\Plugin;
 
 use Drupal\config_filter\ConfigFilterManagerInterface;
-use Drupal\Core\Config\StorageInterface;
 use Drupal\Core\Plugin\DefaultPluginManager;
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;

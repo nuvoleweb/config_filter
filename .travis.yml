@@ -34,7 +34,7 @@ script:
   - cd tests
   - ./vendor/bin/phpcs --config-set installed_paths ../../drupal/coder/coder_sniffer
   - ./vendor/bin/phpcs --config-set show_progress 1
-  - ./vendor/bin/phpcs --standard=Drupal,DrupalPractice ../src
+  - ./vendor/bin/phpcs --warning-severity=0 --standard=Drupal,DrupalPractice ../src
   - ./vendor/bin/phpunit
 
 notifications:

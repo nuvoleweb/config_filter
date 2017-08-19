@@ -2,9 +2,6 @@
 
 namespace Drupal\config_filter;
 
-use Drupal\Component\Plugin\PluginManagerInterface;
-use Drupal\Core\Config\StorageInterface;
-
 /**
  * Interface ConfigFilterManagerInterface.
  */

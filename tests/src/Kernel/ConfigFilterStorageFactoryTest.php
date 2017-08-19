@@ -2,7 +2,6 @@
 
 namespace Drupal\Tests\config_filter\Kernel;
 
-use Drupal\config_filter\Config\FilteredStorage;
 use Drupal\Core\Config\DatabaseStorage;
 use Drupal\KernelTests\KernelTestBase;
 
