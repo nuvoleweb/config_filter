@@ -6,6 +6,7 @@ use Drupal\config_filter\Config\FilteredStorage;
 use Drupal\config_filter\Config\FilteredStorageInterface;
 use Drupal\config_filter\Config\ReadOnlyStorage;
 use Drupal\config_filter\Config\StorageFilterInterface;
+use Drupal\config_filter\Exception\InvalidStorageFilterException;
 use Drupal\Core\Config\CachedStorage;
 use Drupal\Core\Config\StorageInterface;
 use Drupal\KernelTests\Core\Config\Storage\CachedStorageTest;
@@ -336,6 +337,23 @@ class FilteredStorageTest extends CachedStorageTest {
       [TRUE, FALSE],
       [FALSE, FALSE],
     ];
+  }
+
+  /**
+   * Test that an exception is thrown when invalid arguments are passed.
+   */
+  public function testInvalidStorageFilterArgument() {
+    $source = $this->prophesize(StorageInterface::class);
+
+    // We would do this with $this->expectException but alas drupal is stuck on
+    // phpunit 4 and we try not to add deprecated code.
+    try {
+      new FilteredStorage($source->reveal(), [new \stdClass()]);
+      $this->fail('An exception should have been thrown.');
+    }
+    catch (InvalidStorageFilterException $exception) {
+      $this->assertTrue(TRUE);
+    }
   }
 
   /**
