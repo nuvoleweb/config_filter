@@ -3,6 +3,7 @@
 namespace Drupal\config_filter\Tests;
 
 use Drupal\config_filter\Config\FilteredStorage;
+use Drupal\config_filter\Config\FilteredStorageInterface;
 use Drupal\config_filter\Config\ReadOnlyStorage;
 use Drupal\config_filter\Config\StorageFilterInterface;
 use Drupal\Core\Config\CachedStorage;
@@ -46,6 +47,44 @@ class FilteredStorageTest extends CachedStorageTest {
 
       // Assert that the filter gets the storage.
       $this->assertEquals($this->storage, $filter->getPrivateFilteredStorage());
+    }
+  }
+
+  /**
+   * Test that creating collections keeps filters set to the correct storages.
+   */
+  public function testCollectionStorages() {
+    $collection = $this->randomString();
+
+    // The storage is in its default state.
+    $this->assertEquals(StorageInterface::DEFAULT_COLLECTION, $this->storage->getCollectionName());
+
+    /** @var \Drupal\config_filter\Tests\TransparentFilter[] $filters */
+    $filters = static::getProtectedFilters($this->storage);
+    foreach ($filters as $filter) {
+      // Test that the filters have the correct storage set.
+      $this->assertEquals($this->storage, $filter->getPrivateFilteredStorage());
+      $this->assertEquals(StorageInterface::DEFAULT_COLLECTION, $filter->getPrivateSourceStorage()->getCollectionName());
+    }
+
+    // Create a collection which creates a clone of the storage and filters.
+    $collectionStorage = $this->storage->createCollection($collection);
+    $this->assertInstanceOf(FilteredStorageInterface::class, $collectionStorage);
+
+    /** @var \Drupal\config_filter\Tests\TransparentFilter[] $collectionFilters */
+    $collectionFilters = static::getProtectedFilters($collectionStorage);
+    foreach ($collectionFilters as $filter) {
+      // Test that the cloned filter has the correct storage set.
+      $this->assertEquals($collectionStorage, $filter->getPrivateFilteredStorage());
+      $this->assertEquals($collection, $filter->getPrivateSourceStorage()->getCollectionName());
+    }
+
+    /** @var \Drupal\config_filter\Tests\TransparentFilter[] $filters */
+    $filters = static::getProtectedFilters($this->storage);
+    foreach ($filters as $filter) {
+      // Test that the filters on the original storage are still correctly set.
+      $this->assertEquals($this->storage, $filter->getPrivateFilteredStorage());
+      $this->assertEquals(StorageInterface::DEFAULT_COLLECTION, $filter->getPrivateSourceStorage()->getCollectionName());
     }
   }
 

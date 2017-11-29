@@ -202,10 +202,10 @@ class FilteredStorage implements FilteredStorageInterface {
    */
   public function createCollection($collection) {
     $filters = [];
-    foreach ($this->filters as $filter) {
+    foreach ($this->filters as $key => $filter) {
       $filter = $filter->filterCreateCollection($collection);
       if ($filter) {
-        $filters[] = $filter;
+        $filters[$key] = $filter;
       }
     }
 
