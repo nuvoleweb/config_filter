@@ -189,8 +189,7 @@ interface StorageFilterInterface {
    *
    * @return \Drupal\config_filter\Config\StorageFilterInterface|null
    *   Return a filter that should participate in the collection. This allows
-   *   filters to act on different collections. Note that a new instance of the
-   *   filter should be created rather than returning $this directly.
+   *   filters to act on different collections.
    */
   public function filterCreateCollection($collection);
 
