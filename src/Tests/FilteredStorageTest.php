@@ -31,12 +31,8 @@ class FilteredStorageTest extends CachedStorageTest {
    * Test that the storage is set on the filters.
    */
   public function testSettingStorages() {
-    $filterReflection = new \ReflectionClass(FilteredStorage::class);
-    $filtersProperty = $filterReflection->getProperty('filters');
-    $filtersProperty->setAccessible(TRUE);
-
     /** @var \Drupal\config_filter\Tests\TransparentFilter[] $filters */
-    $filters = $filtersProperty->getValue($this->storage);
+    $filters = static::getProtectedFilters($this->storage);
     foreach ($filters as $filter) {
       // Test that the source storage is a ReadonlyStorage and wraps the cached
       // storage from the inherited test.
@@ -51,6 +47,31 @@ class FilteredStorageTest extends CachedStorageTest {
       // Assert that the filter gets the storage.
       $this->assertEquals($this->storage, $filter->getPrivateFilteredStorage());
     }
+  }
+
+  /**
+   * Test setting up filters in FilteredStorage::createCollection().
+   */
+  public function testCreateCollectionFilter() {
+    $collection = $this->randomString();
+    $filteredCollection = $this->randomString();
+
+    $filter = $this->prophesizeFilter();
+    $filterC = $this->prophesizeFilter();
+    $filterC->filterGetCollectionName($collection)->willReturn($filteredCollection);
+    $filter->filterCreateCollection($collection)->willReturn($filterC->reveal());
+
+    $source = $this->prophesize(StorageInterface::class);
+    $sourceC = $this->prophesize(StorageInterface::class);
+    $sourceC->getCollectionName()->willReturn($collection);
+    $source->createCollection($collection)->willReturn($sourceC->reveal());
+
+    $storage = new FilteredStorage($source->reveal(), [$filter->reveal()]);
+    // Creating a collection makes sure the filters were correctly set up.
+    $storageC = $storage->createCollection($collection);
+
+    // Test that the collection is filtered in the collection storage.
+    $this->assertEquals($filteredCollection, $storageC->getCollectionName());
   }
 
   /**
@@ -286,6 +307,23 @@ class FilteredStorageTest extends CachedStorageTest {
     $filter->setSourceStorage(Argument::type(ReadOnlyStorage::class))->shouldBeCalledTimes(1);
     $filter->setFilteredStorage(Argument::type(FilteredStorage::class))->shouldBeCalledTimes(1);
     return $filter;
+  }
+
+  /**
+   * Get the filters from a FilteredStorageInterface.
+   *
+   * @param \Drupal\Core\Config\StorageInterface $storage
+   *   The storage with the protected filters property.
+   *
+   * @return \Drupal\config_filter\Config\StorageFilterInterface[]
+   *   The array of filters.
+   */
+  protected static function getProtectedFilters(StorageInterface $storage) {
+    $filterReflection = new \ReflectionClass(FilteredStorage::class);
+    $filtersProperty = $filterReflection->getProperty('filters');
+    $filtersProperty->setAccessible(TRUE);
+
+    return $filtersProperty->getValue($storage);
   }
 
   /**
