@@ -1,7 +1,6 @@
 name: Config Filter Test
 type: module
-core: 8.x
-core_version_requirement: ^8 || ^9
+core_version_requirement: ^8.8 || ^9
 package: Testing
 dependencies:
   - config_filter:config_filter
