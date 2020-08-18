@@ -22,7 +22,7 @@ class FilteredStorageTest extends CachedStorageTest {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
     // The storage is a wrapper with a transparent filter.
     // So all inherited tests should still pass.
