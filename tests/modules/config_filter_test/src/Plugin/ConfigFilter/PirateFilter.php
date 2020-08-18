@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\config_filter_test\plugin\ConfigFilter;
+namespace Drupal\config_filter_test\Plugin\ConfigFilter;
 
 use Drupal\config_filter\Plugin\ConfigFilterBase;
 
