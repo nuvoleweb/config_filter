@@ -7,7 +7,9 @@ parameters:
     - '#Unsafe usage of new static\(\)\.#'
   paths:
     - src
-    - tests
+#    - tests
+  excludes_analyse:
+    - src/Tests/*
 includes:
   - vendor/mglaman/phpstan-drupal/extension.neon
   - vendor/phpstan/phpstan-deprecation-rules/rules.neon
