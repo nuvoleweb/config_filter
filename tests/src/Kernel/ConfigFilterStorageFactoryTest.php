@@ -2,6 +2,7 @@
 
 namespace Drupal\Tests\config_filter\Kernel;
 
+use Drupal\config_filter\Config\FilteredStorageInterface;
 use Drupal\Core\Config\DatabaseStorage;
 use Drupal\KernelTests\KernelTestBase;
 
@@ -34,6 +35,8 @@ class ConfigFilterStorageFactoryTest extends KernelTestBase {
    * Test that the config.storage.sync is decorated with the filtering version.
    */
   public function testServiceProvider() {
+    // Config Filter makes the sync storage a filtered storage.
+    $this->assertInstanceOf(FilteredStorageInterface::class, $this->container->get('config.storage.sync'));
     // Export the configuration.
     $this->copyConfig($this->container->get('config.storage'), $this->container->get('config.storage.sync'));
 
