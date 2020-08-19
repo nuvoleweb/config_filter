@@ -177,14 +177,6 @@ class FilteredStorageTest extends CachedStorageTest {
         [$this->randomArray(), FALSE],
         [$this->randomArray(), $this->randomArray()],
       ],
-
-      [
-        $this->randomString(),
-        'listAll',
-        'filterListAll',
-        ['a' . $this->randomString(), 'b' . $this->randomString()],
-        ['a' . $this->randomString(), 'b' . $this->randomString()],
-      ],
     ];
     // @codingStandardsIgnoreEnd
   }
