@@ -91,4 +91,22 @@ class ConfigFilterStorageFactoryTest extends KernelTestBase {
     $this->assertEquals($active->readMultiple($active->listAll()), $filtered->readMultiple($filtered->listAll()));
   }
 
+  /**
+   * Test that the listAll method doesn't advertise config that doesn't exist.
+   */
+  public function testListAll() {
+    /** @var \Drupal\Core\Config\StorageInterface $filtered */
+    $filtered = $this->container->get('config_filter.storage_factory')->getSync();
+
+    // The pirate filter always adds the pirate config to listAll.
+    // But the filtered storage doesn't return the ones that don't exist.
+    $this->assertNotContains('system.pirates', $filtered->listAll());
+    $this->assertFalse($filtered->exists('system.pirates'));
+
+    // Turn on bluff mode, to make the filter properly add the config.
+    \Drupal::state()->set('config_filter_test_bluff', TRUE);
+    $this->assertContains('system.pirates', $filtered->listAll());
+    $this->assertTrue($filtered->exists('system.pirates'));
+  }
+
 }
